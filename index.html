@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monev Pelatihan Koding KA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the page */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+
+        /* 3D Button Effect */
+        .btn-3d {
+            position: relative;
+            background-color: #0891b2; /* bg-cyan-600 */
+            color: white;
+            border: none;
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 0.75rem 1.5rem; /* py-3 px-6 */
+            font-weight: 600; /* font-semibold */
+            transition: all 0.15s ease-out;
+            box-shadow: 0 5px 0 #0e7490; /* A darker shade of cyan */
+            cursor: pointer;
+            text-decoration: none; /* Remove underline from links styled as buttons */
+            display: inline-block; /* Ensure anchor tags behave like buttons */
+            text-align: center; /* Center text for anchor tags */
+        }
+
+        .btn-3d:hover {
+            background-color: #06b6d4; /* bg-cyan-500 */
+        }
+
+        .btn-3d:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 0 #0e7490;
+        }
+
+        /* Card hover glow effect */
+        .card-glow {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card-glow:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(22, 163, 74, 0.5), 0 0 10px rgba(22, 163, 74, 0.3);
+        }
+
+        /* Modal transition */
+        #modal, #password-modal {
+            transition: opacity 0.3s ease;
+        }
+
+        /* Animation for wrong password */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+        
+        /* Style for bullet points in modal */
+        #modal-description ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        #modal-description li {
+            margin-bottom: 0.5rem;
+        }
+
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Password Modal -->
+    <div id="password-modal" class="fixed inset-0 bg-gray-900 bg-opacity-95 flex items-center justify-center p-4 z-50">
+        <div class="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl w-full max-w-sm md:max-w-lg lg:max-w-xl p-8 text-center">
+            <h2 class="text-2xl font-bold mb-4 bg-gradient-to-r from-green-400 to-cyan-500 text-transparent bg-clip-text">Verifikasi Akses</h2>
+            <p class="text-gray-400 mb-6">Silakan masukkan kata sandi untuk melanjutkan.</p>
+            <form id="password-form">
+                <input type="password" id="password-input" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 mb-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Monev" required>
+                <p id="password-error" class="text-red-500 text-sm mb-4 hidden">Sepertinya anda bukan peserta pelatihan.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button type="submit" class="btn-3d w-full">Masuk</button>
+                    <a href="https://sites.google.com/view/pendampinganlpd?usp=sharing" target="_blank" class="btn-3d w-full" style="background-color: #16a34a; box-shadow: 0 5px 0 #15803d;">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="container mx-auto px-6 py-12 min-h-screen flex-col items-center justify-center hidden">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-2 bg-gradient-to-r from-green-400 to-cyan-500 text-transparent bg-clip-text">
+                Monev Pelatihan Koding KA
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400">
+                Monitoring dan Evaluasi Pelaksanaan Pelatihan IN-1 Pembelajaran Koding dan Kecerdasan Artifisial Tahun 2025.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+            
+            <!-- Card 1: Observasi -->
+            <div class="card-glow bg-gray-800 border border-gray-700 rounded-xl p-6 flex flex-col items-center text-center cursor-pointer"
+                 data-title="Observasi"
+                 data-description="
+					 <ul>
+					 <li>Rekaman sesi peer teaching selama proses pelatihan.</li>
+					 <li>Catatan ringkas dan temuan penting dari observasi.</li>
+					 <li>Peserta yang diobservasi berasal dari rombel yang sama dengan informan wawancara untuk konsistensi data.</li>
+					 </ul>"
+                 data-download="https://docs.google.com/document/d/1jUFH8vz2tUIw7t1FRoiCZPH4OfCwdo5r/edit?tab=t.0"
+                 data-preview="https://bangbin85.github.io/Monev-KodingKa/Observasi">
+                <div class="mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-semibold mb-2">Observasi</h3>
+                <p class="text-gray-400">Berupa rekaman sesi peer teaching pada proses pelatihan dan catatan ringkas.</p>
+            </div>
+
+            <!-- Card 2: Wawancara -->
+            <div class="card-glow bg-gray-800 border border-gray-700 rounded-xl p-6 flex flex-col items-center text-center cursor-pointer"
+                 data-title="Wawancara"
+                 data-description="
+					 <ul>
+					 <li>Wawancara mendalam dengan 1 Fasilitator untuk memahami perspektif penyampaian materi.</li>
+					 <li>Wawancara dengan perwakilan peserta untuk mendapatkan feedback langsung.</li>
+					 <li>Wawancara dengan pihak Dinas Pendidikan terkait dukungan dan gambaran umum pelaksanaan.</li>
+					 <li>Tujuan utama adalah memetakan gambaran pelaksanaan In-service Training 1 secara komprehensif.</li>
+					 <li>Petugas lapangan menanyakan kesediaan informan apabila sesi wawancara akan direkam dan didokumentasikan.</li>
+					 <li>Dalam mengajukan pertanyaan, petugas lapangan diperkenankan menggunakan bahasa yang lebih sederhana sehingga mudah dipahami informan, namun tidak mengarahkan jawaban informan.</li>
+					 <li>Petugas lapangan menggunakan perspektif “pengumpulan data”, bukan “sosialisasi atau diseminasi”, sehingga petugas lapangan tidak diperkenankan menanggapi dengan negatif atau mengoreksi jawaban responden.</li>
+					 </ul>"
+                 data-download="https://drive.google.com/uc?export=download&id=1bbyJRWWnuwEif7fyHeWt0vApZB19Izp30lCuDm9ifZ0"
+                 data-preview="https://bangbin85.github.io/Monev-KodingKa/Wawancara">
+                <div class="mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-semibold mb-2">Wawancara</h3>
+                <p class="text-gray-400">Melakukan wawan cara terhadap 1 Fasilitator, Peserta, Dinas Pendidikan terkait gambaran pelaksanaan Inservice training-1.</p>
+            </div>
+
+            <!-- Card 3: Laporan -->
+            <div class="card-glow bg-gray-800 border border-gray-700 rounded-xl p-6 flex flex-col items-center text-center cursor-pointer"
+                 data-title="Laporan"
+                 data-description="
+					 <ul>
+					 <li>Petugas lapangan perlu mencatat hasil wawancara dengan detail. </li>
+					 <li>Petugas lapangan dapat melakukan interpretasi dengan disertai basis data yang memadai.</li>
+					 <li>Input data dalam bentuk naratif per topik pertanyaan dengan mendeskripsikan setiap jawaban informan dari pendalaman pertanyaan.</li>
+					 <li>Ditulis dalam kalimat utuh dan lengkap.</li>
+					 <li>Kuotasi yang dianggap penting ditulis dalam tanda kutip “...” dengan format italic.</li>
+					 <li>Jika diperlukan dapat menuliskan catatan pewawancara di akhir narasi. (misalnya terkait: triangulasi data, dinamika pelatihan yang terlihat, interaksi antara fasilitator dan peserta, maupun antarpeserta, dll).</li>
+					 </ul>"
+                 data-download="https://drive.google.com/uc?export=download&id=1S3xPdZHvzNkxd5ke-tdt0KoziETiEm9K"
+                 data-preview="https://bangbin85.github.io/Monev-KodingKa/Ringkas">
+                <div class="mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-yellow-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-semibold mb-2">Laporan Ringkas</h3>
+                <p class="text-gray-400">Rangkuman Laporan Monev.</p>
+            </div>
+        </div>
+
+        <div class="mt-16 text-center">
+            <h3 class="text-2xl font-semibold mb-6">Form</h3>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="https://sites.google.com/view/bangbinedu/refleksi" target="_blank" class="btn-3d">Feedback</a>
+                <a href="https://forms.gle/CcshNYu243GFgMDm8" target="_blank" class="btn-3d" style="background-color: #4f46e5; box-shadow: 0 5px 0 #3730a3;">Wawancara Fasil</a>
+                <a href="https://forms.gle/vTxq1FTbGeMHGaKU8" target="_blank" class="btn-3d" style="background-color: #0feee1; box-shadow: 0 5px 0 #ee0f32;">Wawancara Guru</a>
+                <a href="https://forms.gle/WcfqxhQq7YwvLq25A" target="_blank" class="btn-3d" style="background-color: #ee0f32; box-shadow: 0 5px 0 #3730a3;">Wawancara Dinas</a>
+                <a href="https://forms.gle/pPj78qbtS3H1R3PH9" target="_blank" class="btn-3d" style="background-color: #0fee45; box-shadow: 0 5px 0 #3730a3;">Observasi</a>
+                <a href="https://forms.gle/Rb2924LNkXqR2u8j7" target="_blank" class="btn-3d" style="background-color: #e00fee; box-shadow: 0 5px 0 #ee0f32;">Laporan</a>
+                <a href="https://242522231-atari-embeds.googleusercontent.com/embeds/16cb204cf3a9d4d223a0a3fd8b0eec5d/inner-frame-minified.html?jsh=m%3B%2F_%2Fscs%2Fabc-static%2F_%2Fjs%2Fk%3Dgapi.lb.en.iFs_Bhrqdio.O%2Fd%3D1%2Frs%3DAHpOoo-IvlQWaLHZdUKQFbafXd_3OEvU9Q%2Fm%3D__features__" target="_blank" class="btn-3d" style="background-color: #e00fee; box-shadow: 0 5px 0 #ee0f32;">Survey</a>              
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden">
+        <div id="modal-panel" class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-full overflow-y-auto transform transition-transform duration-300 scale-95">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 id="modal-title" class="text-2xl font-bold text-white"></h3>
+                    <button id="modal-close-btn" class="text-gray-400 hover:text-white transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Modal content with text/bullets -->
+                <div id="modal-content">
+                    <div id="modal-description" class="text-gray-300 mb-6"></div>
+                    <!-- Buttons remain the same -->
+                    <div class="flex flex-wrap gap-4">
+                        <a id="modal-download-link" href="#" target="_blank" class="btn-3d">
+                            Download 1
+                        </a>
+                        <a id="modal-download2-link" href="#" target="_blank" class="btn-3d" style="background-color: #ca8a04; box-shadow: 0 5px 0 #a16207;">
+                            Download 2
+                        </a>
+                        <a id="modal-preview-link" href="#" target="_blank" class="btn-3d" style="background-color: #16a34a; box-shadow: 0 5px 0 #15803d;">
+                            Preview
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- PASSWORD VERIFICATION LOGIC ---
+            const passwordModal = document.getElementById('password-modal');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const passwordError = document.getElementById('password-error');
+            const mainContent = document.getElementById('main-content');
+            const correctPassword = 'Monev';
+
+            // Focus the password input on load
+            passwordInput.focus();
+
+            passwordForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Prevent form from reloading the page
+                const enteredPassword = passwordInput.value;
+
+                if (enteredPassword === correctPassword) {
+                    // Fade out the password modal
+                    passwordModal.style.opacity = '0';
+                    setTimeout(() => {
+                        passwordModal.classList.add('hidden');
+                    }, 300); // Match transition duration
+
+                    // Show and fade in the main content
+                    mainContent.classList.remove('hidden');
+                    mainContent.classList.add('flex'); // Make it flex again
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                    }, 50); // Short delay to ensure display is set before opacity
+
+                } else {
+                    // Show error message and shake the form
+                    passwordError.classList.remove('hidden');
+                    passwordInput.classList.add('shake');
+
+                    // Clear the input
+                    passwordInput.value = '';
+                    passwordInput.focus();
+
+                    // Remove shake animation after it finishes
+                    setTimeout(() => {
+                        passwordInput.classList.remove('shake');
+                    }, 300);
+                }
+            });
+
+            // --- CARD MODAL LOGIC ---
+            const cards = document.querySelectorAll('.card-glow');
+            const modal = document.getElementById('modal');
+            const modalPanel = document.getElementById('modal-panel');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+            const modalDownloadLink = document.getElementById('modal-download-link');
+            const modalDownload2Link = document.getElementById('modal-download2-link');
+            const modalPreviewLink = document.getElementById('modal-preview-link');
+
+            // Function to open the modal
+            const openModal = (card) => {
+                const title = card.dataset.title;
+                const description = card.dataset.description; // This now contains HTML for the bullet points
+                const downloadLink = card.dataset.download;
+                const download2Link = card.dataset.download2;
+                const previewLink = card.dataset.preview;
+
+                modalTitle.textContent = title;
+                // Use innerHTML to render the bullet points from the data-description attribute
+                modalDescription.innerHTML = description;
+
+                // Logic for Download 1
+                if (downloadLink) {
+                    modalDownloadLink.href = downloadLink;
+                    modalDownloadLink.style.display = 'inline-block';
+                } else {
+                    modalDownloadLink.style.display = 'none';
+                }
+
+                // Logic for Download 2
+                if (download2Link) {
+                    modalDownload2Link.href = download2Link;
+                    modalDownload2Link.style.display = 'inline-block';
+                } else {
+                    modalDownload2Link.style.display = 'none';
+                }
+
+                // Logic for Preview
+                if (previewLink) {
+                    modalPreviewLink.href = previewLink;
+                    modalPreviewLink.style.display = 'inline-block';
+                } else {
+                    modalPreviewLink.style.display = 'none';
+                }
+
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+
+                requestAnimationFrame(() => {
+                    modal.style.opacity = '1';
+                    modalPanel.style.transform = 'scale(1)';
+                });
+            };
+
+            // Function to close the modal
+            const closeModal = () => {
+                modal.style.opacity = '0';
+                modalPanel.style.transform = 'scale(0.95)';
+
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            };
+
+            // Add click event listener to each card
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    openModal(card);
+                });
+            });
+
+            // Add click event listener to the close button
+            modalCloseBtn.addEventListener('click', closeModal);
+
+            // Add click event listener to the modal overlay
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Add keyboard event listener for 'Escape' key
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
