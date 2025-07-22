@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eksplorasi Jutaan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <style>
+        /* Font Inter dari Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Warna latar belakang lembut */
+        }
+        /* Custom spinner styling */
+        .digit-spinner {
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+            appearance: textfield;
+            text-align: center;
+            font-size: 1.25rem; /* Adjusted for smaller screens */
+            font-weight: 600;
+            color: #334155;
+            border: none;
+            background: none;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            outline: none;
+        }
+        /* Hide spinner arrows for WebKit browsers */
+        .digit-spinner::-webkit-outer-spin-button,
+        .digit-spinner::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Hide spinner arrows for Firefox */
+        .digit-spinner[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* Responsive font size for spinner on larger screens */
+        @media (min-width: 768px) { /* md breakpoint */
+            .digit-spinner {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-2 sm:p-4"> <!-- Reduced overall padding -->
+    <div class="bg-white p-4 md:p-10 rounded-3xl shadow-xl max-w-4xl w-full text-center border-4 border-blue-200"> <!-- Reduced overall padding -->
+        <!-- Kotak-kotak Nilai Tempat (Digunakan bersama oleh kedua mode dan selalu terlihat) -->
+        <div id="digitBoxesContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2 md:gap-6 mb-6 md:mb-10"> <!-- Reduced gap and margin -->
+            <!-- Jutaan -->
+            <div class="digit-box bg-gradient-to-br from-green-300 to-green-500 p-2 md:p-4 rounded-xl shadow-md flex flex-col items-center justify-between transition-transform transform hover:scale-105 cursor-pointer"> <!-- Reduced padding -->
+                <label for="digit-jutaan" class="text-xs md:text-base font-semibold text-green-800 mb-1">Jutaan</label> <!-- Adjusted font size -->
+                <input type="number" id="digit-jutaan" min="0" max="9" value="0" class="digit-spinner bg-green-100 rounded-lg w-full h-10 md:h-12 text-center text-green-900 focus:ring-2 focus:ring-green-400"> <!-- Adjusted height -->
+            </div>
+
+            <!-- Ratus Ribuan -->
+            <div class="digit-box bg-gradient-to-br from-yellow-300 to-yellow-500 p-2 md:p-4 rounded-xl shadow-md flex flex-col items-center justify-between transition-transform transform hover:scale-105 cursor-pointer">
+                <label for="digit-ratus-ribuan" class="text-xs md:text-base font-semibold text-yellow-800 mb-1">Ratus Ribuan</label>
+                <input type="number" id="digit-ratus-ribuan" min="0" max="9" value="0" class="digit-spinner bg-yellow-100 rounded-lg w-full h-10 md:h-12 text-center text-yellow-900 focus:ring-2 focus:ring-yellow-400">
+            </div>
+
+            <!-- Puluh Ribuan -->
+            <div class="digit-box bg-gradient-to-br from-orange-300 to-orange-500 p-2 md:p-4 rounded-xl shadow-md flex flex-col items-center justify-between transition-transform transform hover:scale-105 cursor-pointer">
+                <label for="digit-puluh-ribuan" class="text-xs md:text-base font-semibold text-orange-800 mb-1">Puluh Ribuan</label>
+                <input type="number" id="digit-puluh-ribuan" min="0" max="9" value="0" class="digit-spinner bg-orange-100 rounded-lg w-full h-10 md:h-12 text-center text-orange-900 focus:ring-2 focus:ring-orange-400">
+            </div>
+
+            <!-- Ribuan -->
+            <div class="digit-box bg-gradient-to-br from-red-300 to-red-500 p-2 md:p-4 rounded-xl shadow-md flex flex-col items-center justify-between transition-transform transform hover:scale-105 cursor-pointer">
+                <label for="digit-ribuan" class="text-xs md:text-base font-semibold text-red-800 mb-1">Ribuan</label>
+                <input type="number" id="digit-ribuan" min="0" max="9" value="0" class="digit-spinner bg-red-100 rounded-lg w-full h-10 md:h-12 text-center text-red-900 focus:ring-2 focus:ring-red-400">
+            </div>
+
+            <!-- Ratusan -->
+            <div class="digit-box bg-gradient-to-br from-purple-300 to-purple-500 p-2 md:p-4 rounded-xl shadow-md flex flex-col items-center justify-between transition-transform transform hover:scale-105 cursor-pointer">
+                <label for="digit-ratusan" class="text-xs md:text-base font-semibold text-purple-800 mb-1">Ratusan</label>
+                <input type="number" id="digit-ratusan" min="0" max="9" value="0" class="digit-spinner bg-purple-100 rounded-lg w-full h-10 md:h-12 text-center text-purple-900 focus:ring-2 focus:ring-purple-400">
+            </div>
+
+            <!-- Puluhan -->
+            <div class="digit-box bg-gradient-to-br from-indigo-300 to-indigo-500 p-2 md:p-4 rounded-xl shadow-md flex flex-col items-center justify-between transition-transform transform hover:scale-105 cursor-pointer">
+                <label for="digit-puluhan" class="text-xs md:text-base font-semibold text-indigo-800 mb-1">Puluhan</label>
+                <input type="number" id="digit-puluhan" min="0" max="9" value="0" class="digit-spinner bg-indigo-100 rounded-lg w-full h-10 md:h-12 text-center text-indigo-900 focus:ring-2 focus:ring-indigo-400">
+            </div>
+
+            <!-- Satuan -->
+            <div class="digit-box bg-gradient-to-br from-pink-300 to-pink-500 p-2 md:p-4 rounded-xl shadow-md flex flex-col items-center justify-between transition-transform transform hover:scale-105 cursor-pointer">
+                <label for="digit-satuan" class="text-xs md:text-base font-semibold text-pink-800 mb-1">Satuan</label>
+                <input type="number" id="digit-satuan" min="0" max="9" value="0" class="digit-spinner bg-pink-100 rounded-lg w-full h-10 md:h-12 text-center text-pink-900 focus:ring-2 focus:ring-pink-400">
+            </div>
+        </div>
+
+        <!-- Bagian Eksplorasi (Halaman Awal) -->
+        <div id="explorationContent">
+            <h1 class="text-2xl md:text-4xl font-extrabold text-blue-700 mb-6 md:mb-8"> <!-- Adjusted font size and margin -->
+                Eksplorasi Jutaan
+            </h1>
+
+            <!-- Panel Angka Utama untuk Eksplorasi -->
+            <div id="mainNumberPanel" class="bg-blue-600 text-3xl md:text-6xl font-bold py-4 px-3 rounded-2xl shadow-lg mb-8 md:mb-10 tracking-wide transition-all duration-300 ease-in-out"> <!-- Adjusted font size and padding -->
+                0
+            </div>
+
+            <!-- Tombol-tombol Aksi untuk Eksplorasi -->
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mt-6 md:mt-8"> <!-- Reduced gap and margin -->
+                <button id="resetButton" class="px-4 py-2 md:px-6 md:py-3 bg-gray-500 text-white font-bold rounded-full shadow-lg hover:bg-gray-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base"> <!-- Adjusted padding and font size -->
+                    Reset Angka
+                </button>
+                <button id="speakButton" class="px-4 py-2 md:px-6 md:py-3 bg-blue-500 text-white font-bold rounded-full shadow-lg hover:bg-blue-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base">
+                    Dengarkan Angka
+                </button>
+                <button id="ujiButton" class="px-4 py-2 md:px-6 md:py-3 bg-purple-500 text-white font-bold rounded-full shadow-lg hover:bg-purple-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base">
+                    Mulai Uji
+                </button>
+            </div>
+        </div>
+
+        <!-- Bagian Uji (Game) - Awalnya Tersembunyi -->
+        <div id="gameContent" class="hidden">
+            <h1 class="text-2xl md:text-4xl font-extrabold text-green-700 mb-6 md:mb-8"> <!-- Adjusted font size and margin -->
+                Uji Pemahaman Bilangan Jutaan
+            </h1>
+            <p id="levelIndicator" class="text-lg md:text-xl font-semibold text-gray-700 mb-3 md:mb-4">Level 1</p> <!-- Adjusted font size and margin -->
+
+            <!-- Panel Angka Target untuk Game -->
+            <div id="gameTargetPanel" class="bg-green-600 text-3xl md:text-6xl font-bold py-4 px-3 rounded-2xl shadow-lg mb-8 md:mb-10 tracking-wide transition-all duration-300 ease-in-out"> <!-- Adjusted font size and padding -->
+                0
+            </div>
+
+            <!-- Area Pesan Game -->
+            <div id="gameMessage" class="mt-4 md:mt-6 text-base md:text-lg font-semibold min-h-[2em] text-red-600"></div> <!-- Adjusted margin and font size -->
+
+            <!-- Tombol-tombol Aksi untuk Game -->
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mt-6 md:mt-8"> <!-- Reduced gap and margin -->
+                <button id="checkAnswerButton" class="px-4 py-2 md:px-6 md:py-3 bg-green-500 text-white font-bold rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base">
+                    Periksa Jawaban
+                </button>
+                <button id="gameBackButton" class="px-4 py-2 md:px-6 md:py-3 bg-red-500 text-white font-bold rounded-full shadow-lg hover:bg-red-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base">
+                    Kembali ke Halaman Awal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mendapatkan referensi ke elemen-elemen DOM
+        const explorationContent = document.getElementById('explorationContent');
+        const gameContent = document.getElementById('gameContent');
+
+        const mainNumberPanel = document.getElementById('mainNumberPanel');
+        const digitBoxesContainer = document.getElementById('digitBoxesContainer'); // Kontainer utama untuk kotak digit
+
+        const digitInputs = {
+            jutaan: document.getElementById('digit-jutaan'),
+            ratusRibuan: document.getElementById('digit-ratus-ribuan'),
+            puluhRibuan: document.getElementById('digit-puluh-ribuan'),
+            ribuan: document.getElementById('digit-ribuan'),
+            ratusan: document.getElementById('digit-ratusan'),
+            puluhan: document.getElementById('digit-puluhan'),
+            satuan: document.getElementById('digit-satuan')
+        };
+
+        const resetButton = document.getElementById('resetButton');
+        const speakButton = document.getElementById('speakButton');
+        const ujiButton = document.getElementById('ujiButton'); // Tombol Uji baru
+
+        const gameTargetPanel = document.getElementById('gameTargetPanel');
+        const levelIndicator = document.getElementById('levelIndicator');
+        const gameMessage = document.getElementById('gameMessage');
+        const checkAnswerButton = document.getElementById('checkAnswerButton');
+        const gameBackButton = document.getElementById('gameBackButton');
+
+        // Objek untuk menyimpan nilai digit saat ini
+        let currentDigits = {
+            jutaan: 0,
+            ratusRibuan: 0,
+            puluhRibuan: 0,
+            ribuan: 0,
+            ratusan: 0,
+            puluhan: 0,
+            satuan: 0
+        };
+
+        // Variabel untuk mode game
+        let currentMode = 'exploration'; // 'exploration' atau 'game'
+        let gameLevel = 1; // 1 atau 2
+        let targetNumber = 0; // Angka target untuk mode game
+
+        // Menyimpan urutan asli elemen digit-box
+        let originalDigitBoxOrder = [];
+
+        // Inisialisasi SpeechSynthesis API
+        const synth = window.speechSynthesis;
+        let utterance = new SpeechSynthesisUtterance();
+        utterance.lang = 'id-ID'; // Mengatur bahasa ke Bahasa Indonesia
+
+        // Inisialisasi Tone.js Synths
+        let digitSynth;
+        let correctSynth;
+        let incorrectSynth;
+        let winSynth;
+        let buttonSynth;
+
+        // Fungsi untuk menginisialisasi AudioContext Tone.js
+        // Ini harus dipanggil setelah interaksi pengguna pertama
+        function initializeAudio() {
+            if (Tone.context.state !== 'running') {
+                Tone.start();
+                console.log('Audio context started.');
+            }
+            // Inisialisasi synths hanya sekali
+            if (!digitSynth) {
+                digitSynth = new Tone.Synth().toDestination();
+                correctSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+                incorrectSynth = new Tone.PolySynth(Tone.Synth).toDestination();
+                winSynth = new Tone.Synth().toDestination();
+                buttonSynth = new Tone.Synth().toDestination();
+            }
+        }
+
+        // Fungsi untuk mencari dan menetapkan suara Bahasa Indonesia
+        function setIndonesianVoice() {
+            const voices = synth.getVoices();
+            let indonesianVoice = voices.find(voice => voice.lang === 'id-ID');
+
+            if (indonesianVoice) {
+                utterance.voice = indonesianVoice;
+            } else {
+                // Fallback jika suara id-ID spesifik tidak ditemukan,
+                // tetap gunakan lang id-ID dan biarkan browser memilih default
+                console.warn('Suara Bahasa Indonesia tidak ditemukan. Menggunakan suara default untuk id-ID.');
+            }
+        }
+
+        // Pastikan suara dimuat sebelum mencoba mengaturnya
+        if (synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = setIndonesianVoice;
+        }
+        // Panggil juga sekali jika suara sudah dimuat
+        setIndonesianVoice();
+
+        // --- Fungsi Suara Tone.js ---
+        function playDigitChangeSound() {
+            initializeAudio();
+            digitSynth.triggerAttackRelease("C4", "32n");
+        }
+
+        function playCorrectSound() {
+            initializeAudio();
+            correctSynth.triggerAttackRelease(["C5", "E5", "G5"], "8n");
+        }
+
+        function playIncorrectSound() {
+            initializeAudio();
+            incorrectSynth.triggerAttackRelease(["C4", "Db4"], "8n");
+        }
+
+        function playWinSound() {
+            initializeAudio();
+            const now = Tone.now();
+            winSynth.triggerAttackRelease("C5", "8n", now);
+            winSynth.triggerAttackRelease("E5", "8n", now + 0.1);
+            winSynth.triggerAttackRelease("G5", "8n", now + 0.2);
+            winSynth.triggerAttackRelease("C6", "8n", now + 0.3);
+        }
+
+        function playButtonSound() {
+            initializeAudio();
+            buttonSynth.triggerAttackRelease("C3", "64n");
+        }
+
+        /**
+         * Mengubah angka menjadi format string dengan titik sebagai pemisah ribuan.
+         * Contoh: 1234567 menjadi "1.234.567"
+         * @param {number} number - Angka yang akan diformat.
+         * @returns {string} Angka yang sudah diformat.
+         */
+        function formatNumber(number) {
+            return new Intl.NumberFormat('id-ID').format(number);
+        }
+
+        /**
+         * Mengucapkan angka menggunakan Text-to-Speech.
+         * @param {string} text - Teks (angka yang diformat) yang akan diucapkan.
+         */
+        function speakText(text) {
+            initializeAudio(); // Pastikan audio context dimulai sebelum bicara
+            if (synth.speaking) {
+                synth.cancel(); // Hentikan ucapan sebelumnya jika ada
+            }
+            utterance.text = text;
+            synth.speak(utterance);
+        }
+
+        /**
+         * Memperbarui panel angka utama berdasarkan nilai digit saat ini.
+         * Digunakan di mode eksplorasi.
+         */
+        function updateMainNumberPanel() {
+            const totalNumber =
+                currentDigits.jutaan * 1000000 +
+                currentDigits.ratusRibuan * 100000 +
+                currentDigits.puluhRibuan * 10000 +
+                currentDigits.ribuan * 1000 +
+                currentDigits.ratusan * 100 +
+                currentDigits.puluhan * 10 +
+                currentDigits.satuan * 1;
+            mainNumberPanel.textContent = formatNumber(totalNumber);
+        }
+
+        /**
+         * Menginisialisasi nilai digit dan memperbarui tampilan.
+         * @param {number} initialNumber - Angka awal untuk diatur.
+         */
+        function initializeDigits(initialNumber = 0) {
+            let tempNumber = initialNumber;
+            currentDigits.jutaan = Math.floor(tempNumber / 1000000);
+            tempNumber %= 1000000;
+            currentDigits.ratusRibuan = Math.floor(tempNumber / 100000);
+            tempNumber %= 100000;
+            currentDigits.puluhRibuan = Math.floor(tempNumber / 10000);
+            tempNumber %= 10000;
+            currentDigits.ribuan = Math.floor(tempNumber / 1000);
+            tempNumber %= 1000;
+            currentDigits.ratusan = Math.floor(tempNumber / 100);
+            tempNumber %= 100;
+            currentDigits.puluhan = Math.floor(tempNumber / 10);
+            tempNumber %= 10;
+            currentDigits.satuan = tempNumber;
+
+            for (const key in digitInputs) {
+                if (digitInputs[key]) {
+                    digitInputs[key].value = currentDigits[key];
+                }
+            }
+            // updateMainNumberPanel() hanya dipanggil di mode eksplorasi
+            if (currentMode === 'exploration') {
+                updateMainNumberPanel();
+            }
+        }
+
+        /**
+         * Fungsi untuk mengacak array (Fisher-Yates shuffle).
+         * @param {Array} array - Array yang akan diacak.
+         * @returns {Array} Array yang sudah diacak.
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        /**
+         * Mengatur ulang urutan kotak digit ke urutan aslinya.
+         */
+        function restoreDigitBoxOrder() {
+            // Hapus semua anak dari kontainer saat ini
+            while (digitBoxesContainer.firstChild) {
+                digitBoxesContainer.removeChild(digitBoxesContainer.firstChild);
+            }
+            // Tambahkan kembali elemen dari urutan asli
+            originalDigitBoxOrder.forEach(box => digitBoxesContainer.appendChild(box));
+        }
+
+        /**
+         * Mengubah tampilan mode aplikasi.
+         * @param {string} mode - 'exploration' atau 'game'.
+         */
+        function showMode(mode) {
+            currentMode = mode;
+            if (mode === 'exploration') {
+                explorationContent.classList.remove('hidden');
+                gameContent.classList.add('hidden');
+                restoreDigitBoxOrder(); // Pastikan urutan kembali normal
+                // Inisialisasi ulang mode eksplorasi dengan angka acak baru
+                const randomInitialNumber = Math.floor(Math.random() * 9000000) + 1000000;
+                initializeDigits(randomInitialNumber);
+                gameMessage.textContent = ''; // Bersihkan pesan game
+            } else { // mode === 'game'
+                explorationContent.classList.add('hidden');
+                gameContent.classList.remove('hidden');
+            }
+        }
+
+        /**
+         * Memulai mode game pada level tertentu.
+         * @param {number} level - Level game (1 atau 2).
+         */
+        function startGame(level) {
+            gameLevel = level;
+            levelIndicator.textContent = `Level ${gameLevel}`;
+            gameMessage.textContent = ''; // Bersihkan pesan sebelumnya
+
+            // Reset semua input digit ke 0
+            for (const key in digitInputs) {
+                digitInputs[key].value = 0;
+                currentDigits[key] = 0; // Pastikan objek currentDigits juga 0
+            }
+
+            // Hasilkan angka target acak antara 1.000.000 dan 9.999.999
+            targetNumber = Math.floor(Math.random() * 9000000) + 1000000;
+            gameTargetPanel.textContent = formatNumber(targetNumber);
+
+            if (gameLevel === 2) {
+                // Acak urutan kotak digit untuk Level 2
+                const digitBoxes = Array.from(digitBoxesContainer.children);
+                const shuffledBoxes = shuffleArray(digitBoxes);
+                // Hapus semua anak dari kontainer saat ini sebelum menambahkan yang diacak
+                while (digitBoxesContainer.firstChild) {
+                    digitBoxesContainer.removeChild(digitBoxesContainer.firstChild);
+                }
+                shuffledBoxes.forEach(box => digitBoxesContainer.appendChild(box));
+            } else {
+                // Pastikan urutan kembali normal untuk Level 1
+                restoreDigitBoxOrder();
+            }
+        }
+
+        /**
+         * Memeriksa jawaban peserta di mode game.
+         */
+        function checkAnswer() {
+            let userAnswer = 0;
+            // Dapatkan nilai dari input sesuai dengan urutan saat ini di DOM
+            const orderedDigitInputs = Array.from(digitBoxesContainer.children).map(box => box.querySelector('input[type="number"]'));
+
+            // Map label ke nilai tempat yang benar
+            const labelToValue = {
+                'Jutaan': 1000000,
+                'Ratus Ribuan': 100000,
+                'Puluh Ribuan': 10000,
+                'Ribuan': 1000,
+                'Ratusan': 100,
+                'Puluhan': 10,
+                'Satuan': 1
+            };
+
+            orderedDigitInputs.forEach(input => {
+                const labelElement = input.previousElementSibling; // Label adalah sibling sebelumnya
+                const labelText = labelElement ? labelElement.textContent.trim() : '';
+                const digitValue = parseInt(input.value);
+
+                if (!isNaN(digitValue) && labelToValue[labelText] !== undefined) {
+                    userAnswer += digitValue * labelToValue[labelText];
+                }
+            });
+
+
+            if (userAnswer === targetNumber) {
+                playCorrectSound(); // Mainkan suara benar
+                gameMessage.textContent = 'Hebat! Jawaban Anda Benar!';
+                gameMessage.classList.remove('text-red-600');
+                gameMessage.classList.add('text-green-600');
+                setTimeout(() => {
+                    if (gameLevel === 1) {
+                        // Lanjut ke Level 2 setelah jawaban benar di Level 1
+                        startGame(2);
+                    } else {
+                        // Selesai semua level di Level 2
+                        playWinSound(); // Mainkan suara menang
+                        gameMessage.textContent = 'Selamat! Anda telah menyelesaikan semua level!';
+                        // Opsional: tambahkan tombol untuk memulai ulang game atau kembali ke awal
+                    }
+                }, 1500); // Beri jeda sebentar sebelum lanjut
+            } else {
+                playIncorrectSound(); // Mainkan suara salah
+                gameMessage.textContent = 'Maaf, Jawaban Anda Salah. Coba Lagi!';
+                gameMessage.classList.remove('text-green-600');
+                gameMessage.classList.add('text-red-600');
+            }
+        }
+
+        // --- Event Listeners ---
+
+        // Event listener untuk setiap input digit (berlaku untuk kedua mode)
+        for (const key in digitInputs) {
+            digitInputs[key].addEventListener('input', (event) => {
+                let value = parseInt(event.target.value);
+                if (isNaN(value) || value < 0) {
+                    value = 0;
+                } else if (value > 9) {
+                    value = 9;
+                }
+                event.target.value = value;
+                // currentDigits[key] = value; // Tidak perlu update currentDigits di sini untuk game mode
+                // Hanya perbarui panel utama jika di mode eksplorasi
+                if (currentMode === 'exploration') {
+                    // Update currentDigits hanya di mode eksplorasi
+                    currentDigits[key] = value;
+                    updateMainNumberPanel();
+                }
+                playDigitChangeSound(); // Mainkan suara saat digit berubah
+            });
+
+            digitInputs[key].addEventListener('touchstart', (event) => {
+                event.target.focus();
+            });
+        }
+
+        // Tombol Reset (mode eksplorasi)
+        resetButton.addEventListener('click', () => {
+            playButtonSound(); // Mainkan suara tombol
+            initializeDigits(0);
+        });
+
+        // Tombol Dengarkan Angka (mode eksplorasi)
+        speakButton.addEventListener('click', () => {
+            playButtonSound(); // Mainkan suara tombol
+            const textToSpeak = mainNumberPanel.textContent;
+            speakText(textToSpeak);
+        });
+
+        // Tombol Mulai Uji (dari mode eksplorasi ke mode game)
+        ujiButton.addEventListener('click', () => {
+            playButtonSound(); // Mainkan suara tombol
+            showMode('game');
+            startGame(1); // Mulai game dari Level 1
+        });
+
+        // Tombol Periksa Jawaban (mode game)
+        checkAnswerButton.addEventListener('click', () => {
+            playButtonSound(); // Mainkan suara tombol
+            checkAnswer();
+        });
+
+        // Tombol Kembali ke Halaman Awal (dari mode game ke mode eksplorasi)
+        gameBackButton.addEventListener('click', () => {
+            playButtonSound(); // Mainkan suara tombol
+            showMode('exploration');
+        });
+
+        // Inisialisasi game saat halaman dimuat
+        window.onload = () => {
+            // Simpan urutan asli elemen digit-box saat pertama kali dimuat
+            originalDigitBoxOrder = Array.from(digitBoxesContainer.children);
+            showMode('exploration'); // Mulai di mode eksplorasi
+        };
+    </script>
+</body>
+</html>
