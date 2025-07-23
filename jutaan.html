@@ -227,12 +227,12 @@
                 <button id="resetButton" class="px-4 py-2 md:px-6 md:py-3 bg-gray-500 text-white font-bold rounded-full shadow-lg hover:bg-gray-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base"> <!-- Adjusted padding and font size -->
                     Reset
                 </button>
-                <button id="speakButton" class="px-4 py-2 md:px-6 md:py-3 bg-blue-500 text-white font-bold rounded-full shadow-lg hover:bg-blue-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base">
-                    Dengarkan
-                </button>
+				<button id="speakButton" class="px-4 py-2 md:px-6 md:py-3 bg-blue-500 text-white font-bold rounded-full shadow-lg hover:bg-blue-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base">
+					<i class="fa fa-music" aria-hidden="true"></i> </button>
                 <button id="profileButton" class="px-4 py-2 md:px-6 md:py-3 bg-indigo-500 text-white font-bold rounded-full shadow-lg hover:bg-indigo-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base">
                     <i class="fa fa-user"></i>
-                </button>				
+                </button>	
+				<a href="https://sites.google.com/view/bangbinedu/home" target="_blank"><button class="px-4 py-2 md:px-6 md:py-3 bg-red-500 text-white font-bold rounded-full shadow-lg hover:bg-red-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base"><i style="color: white; text-decoration: none;"><i class="fa fa-home"></i></button></a>				
                 <button id="ujiButton" class="px-4 py-2 md:px-6 md:py-3 bg-purple-500 text-white font-bold rounded-full shadow-lg hover:bg-purple-600 transition-all duration-300 ease-in-out transform hover:scale-105 text-sm md:text-base">
                     Uji
                 </button>
@@ -245,6 +245,9 @@
                 Uji Pemahaman Bilangan Jutaan
             </h1>
             <p id="levelIndicator" class="text-lg md:text-xl font-semibold text-gray-700 mb-3 md:mb-4">Level 1</p> <!-- Adjusted font size and margin -->
+            
+            <!-- Timer Display -->
+            <div id="timerDisplay" class="text-xl md:text-2xl font-bold text-red-600 mb-4">Waktu: 20</div>
 
             <!-- Panel Angka Target untuk Game -->
             <div id="gameTargetPanel" class="bg-green-600 text-3xl md:text-6xl font-bold py-4 px-3 rounded-2xl shadow-lg mb-8 md:mb-10 tracking-wide transition-all duration-300 ease-in-out"> <!-- Adjusted font size and padding -->
@@ -325,6 +328,7 @@
         const gameMessage = document.getElementById('gameMessage');
         const checkAnswerButton = document.getElementById('checkAnswerButton');
         const gameBackButton = document.getElementById('gameBackButton');
+        const timerDisplay = document.getElementById('timerDisplay'); // Elemen untuk menampilkan timer
 
         // Modal Elements
         const profilModal = document.getElementById('profilModal');
@@ -347,6 +351,8 @@
         let currentMode = 'exploration'; // 'exploration' atau 'game'
         let gameLevel = 1; // 1 atau 2
         let targetNumber = 0; // Angka target untuk mode game
+        let timerInterval; // Variabel untuk menyimpan interval timer
+        let timeLeft = 20; // Waktu awal timer (20 detik)
 
         // Menyimpan urutan asli elemen digit-box
         let originalDigitBoxOrder = [];
@@ -362,6 +368,7 @@
         let incorrectSynth;
         let winSynth;
         let buttonSynth;
+        let loseSound; // Suara kalah
 
         // Fungsi untuk menginisialisasi AudioContext Tone.js
         // Ini harus dipanggil setelah interaksi pengguna pertama
@@ -377,6 +384,7 @@
                 incorrectSynth = new Tone.PolySynth(Tone.Synth).toDestination();
                 winSynth = new Tone.Synth().toDestination();
                 buttonSynth = new Tone.Synth().toDestination();
+                loseSound = new Tone.Synth().toDestination(); // Inisialisasi suara kalah
             }
         }
 
@@ -429,6 +437,13 @@
         function playButtonSound() {
             initializeAudio();
             buttonSynth.triggerAttackRelease("C3", "64n");
+        }
+
+        function playLoseSound() {
+            initializeAudio();
+            loseSound.triggerAttackRelease("F3", "8n");
+            loseSound.triggerAttackRelease("D3", "8n", "+0.1");
+            loseSound.triggerAttackRelease("A2", "8n", "+0.2");
         }
 
         /**
@@ -540,6 +555,7 @@
                 const randomInitialNumber = Math.floor(Math.random() * 9000000) + 1000000;
                 initializeDigits(randomInitialNumber);
                 gameMessage.textContent = ''; // Bersihkan pesan game
+                stopTimer(); // Hentikan timer saat kembali ke mode eksplorasi
             } else { // mode === 'game'
                 explorationContent.classList.add('hidden');
                 gameContent.classList.remove('hidden');
@@ -559,7 +575,9 @@
             for (const key in digitInputs) {
                 digitInputs[key].value = 0;
                 currentDigits[key] = 0; // Pastikan objek currentDigits juga 0
+                digitInputs[key].disabled = false; // Aktifkan input
             }
+            checkAnswerButton.disabled = false; // Aktifkan tombol cek jawaban
 
             // Hasilkan angka target acak antara 1.000.000 dan 9.999.999
             targetNumber = Math.floor(Math.random() * 9000000) + 1000000;
@@ -577,6 +595,68 @@
             } else {
                 // Pastikan urutan kembali normal untuk Level 1
                 restoreDigitBoxOrder();
+            }
+            startTimer(); // Mulai timer saat game dimulai
+        }
+
+        /**
+         * Memulai timer permainan.
+         */
+        function startTimer() {
+            clearInterval(timerInterval); // Bersihkan interval sebelumnya jika ada
+            timeLeft = 20; // Atur ulang waktu
+            timerDisplay.textContent = `Waktu: ${timeLeft}`;
+            timerDisplay.classList.remove('text-green-600', 'text-yellow-600');
+            timerDisplay.classList.add('text-red-600'); // Warna merah saat mulai
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `Waktu: ${timeLeft}`;
+
+                if (timeLeft <= 5 && timeLeft > 0) {
+                    timerDisplay.classList.remove('text-red-600');
+                    timerDisplay.classList.add('text-yellow-600'); // Kuning saat 5 detik terakhir
+                } else if (timeLeft > 5) {
+                    timerDisplay.classList.remove('text-yellow-600', 'text-red-600');
+                    timerDisplay.classList.add('text-green-600'); // Hijau saat di atas 5 detik
+                }
+
+                if (timeLeft <= 0) {
+                    stopTimer();
+                    endGame(false); // Pemain kalah
+                }
+            }, 1000);
+        }
+
+        /**
+         * Menghentikan timer permainan.
+         */
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        /**
+         * Mengakhiri permainan (kalah atau menang).
+         * @param {boolean} win - True jika pemain menang, false jika kalah.
+         */
+        function endGame(win) {
+            stopTimer();
+            // Nonaktifkan semua input digit
+            for (const key in digitInputs) {
+                digitInputs[key].disabled = true;
+            }
+            checkAnswerButton.disabled = true; // Nonaktifkan tombol cek jawaban
+
+            if (win) {
+                playWinSound();
+                gameMessage.textContent = 'Selamat! Anda telah menyelesaikan semua level!';
+                gameMessage.classList.remove('text-red-600');
+                gameMessage.classList.add('text-green-600');
+            } else {
+                playLoseSound(); // Mainkan suara kalah
+                gameMessage.textContent = 'Waktu Habis! Anda Kalah. Coba Lagi!';
+                gameMessage.classList.remove('text-green-600');
+                gameMessage.classList.add('text-red-600');
             }
         }
 
@@ -615,15 +695,14 @@
                 gameMessage.textContent = 'Hebat! Jawaban Anda Benar!';
                 gameMessage.classList.remove('text-red-600');
                 gameMessage.classList.add('text-green-600');
+                stopTimer(); // Hentikan timer saat jawaban benar
                 setTimeout(() => {
                     if (gameLevel === 1) {
                         // Lanjut ke Level 2 setelah jawaban benar di Level 1
                         startGame(2);
                     } else {
                         // Selesai semua level di Level 2
-                        playWinSound(); // Mainkan suara menang
-                        gameMessage.textContent = 'Selamat! Anda telah menyelesaikan semua level!';
-                        // Opsional: tambahkan tombol untuk memulai ulang game atau kembali ke awal
+                        endGame(true); // Pemain menang
                     }
                 }, 1500); // Beri jeda sebentar sebelum lanjut
             } else {
